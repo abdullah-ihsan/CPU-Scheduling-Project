@@ -5,7 +5,6 @@ const path = require('path');
 let mainWindow;
 const ipc = electron.ipcMain;
 
-let win;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -13,7 +12,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: true,
       preload: path.join(__dirname, 'preload.js')
     }
   })
