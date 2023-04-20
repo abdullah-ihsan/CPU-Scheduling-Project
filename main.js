@@ -30,7 +30,7 @@ app.whenReady().then(() => {
 
   ipc.on('login-success', () => {
     console.log('login ipc received');
-    mainWindow.loadFile('simulator-main.html');
+    mainWindow.loadFile('simulator/simulator-main.html');
   })
 
   ipc.on('main-page', () => {

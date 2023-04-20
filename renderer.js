@@ -8,10 +8,4 @@ document.addEventListener('DOMContentLoaded', () => {
     ipc.send('login-success');
   });
 
-  document.getElementById('back-to-main').addEventListener('click', ()=>
-  {
-    console.log('back to main menu button pressed');
-    ipc.send('main-page');
-  })
-
 });
