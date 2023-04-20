@@ -1,3 +1,4 @@
+//hi there
 const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
 const app = electron.app;
