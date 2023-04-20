@@ -5,6 +5,8 @@ const path = require('path');
 let mainWindow;
 const ipc = electron.ipcMain;
 
+let win;
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
