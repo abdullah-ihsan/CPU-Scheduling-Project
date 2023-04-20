@@ -16,8 +16,10 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 })
 
-const {contextBridge, ipcRenderer} = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
 
-// contextBridge.exposeInMainWorld('api', {
-//   login-success
-// })
+contextBridge.exposeInMainWorld('api', {
+  send: (data) => {
+    ipcRenderer.send(data);
+  }
+})
