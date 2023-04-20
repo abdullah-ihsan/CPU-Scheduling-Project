@@ -5,7 +5,7 @@ const path = require('path');
 let mainWindow;
 const ipc = electron.ipcMain;
 
-function createWindow () {
+function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -28,14 +28,14 @@ app.whenReady().then(() => {
   })
 
 
-ipc.on('login-success', function(eval, args) {
-  console.log('login ipc received');
-  mainWindow.loadFile('simulator-main.html');
-})
+  ipc.on('login-success', () => {
+    console.log('login ipc received');
+    mainWindow.loadFile('simulator-main.html');
+  })
 
-ipc.on('main-page', () => {
-  mainWindow.loadFile('index.html');
-})
+  ipc.on('main-page', () => {
+    mainWindow.loadFile('index.html');
+  })
 
 })
 
