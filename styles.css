@@ -10,8 +10,8 @@ h1 {
     text-align: center;
 }
 
-table,
-td {
+#login-panel table,
+#login-panel td {
     margin-left: auto;
     margin-right: auto;
     text-align: center;

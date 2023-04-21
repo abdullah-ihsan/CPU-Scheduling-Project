@@ -1,17 +1,16 @@
 
-
 document.addEventListener('DOMContentLoaded', () => {
 
-  // document.getElementById('login').addEventListener('click', () => {
-  //   console.log('login button pressed');
-  //   window.api.send('login-success');
-  // });
-  const submitFormButton = document.querySelector(".login-panel");
+  document.getElementById('login-panel').addEventListener('submit', (event) => {
+    // Prevent the form from actually being "submitted", as that will effectively reload the page.
+    event.preventDefault()
 
-  submitFormButton.addEventListener("login", function (event) {
-    event.preventDefault();
-    console.log('login button pressed');
-    window.api.send('login-success');
-  });
+    // event.target refers to the <form> element that's attached to the submit event.
+    const form = event.target
+    const username = form.username.value;
+    const password = form.password.value;
+
+    console.log([username, password]);
+  })
 
 });
