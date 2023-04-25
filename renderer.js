@@ -1,4 +1,7 @@
 
+const usernamelogin = "admin";
+const passwordlogin = "123";
+
 document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('login-panel').addEventListener('submit', (event) => {
@@ -11,6 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const password = form.password.value;
 
     console.log([username, password]);
+
+    if(username == usernamelogin && password == passwordlogin){
+      window.api.send('login-success');
+    }
+
+
   })
 
 });
