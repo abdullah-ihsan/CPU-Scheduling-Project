@@ -6,10 +6,14 @@ let mainWindow;
 const ipc = electron.ipcMain;
 const isMac = process.platform === 'darwin';
 
+//process.env.NODE_ENV !== 'production' // Set to production to exit dev more
+const isDev = process.env.NODE_ENV !== 'production'
+
+
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
+    width: isDev ? 1200 : 800,
     height: 600,
     webPreferences: {
       nodeIntegration: true,
@@ -19,7 +23,8 @@ function createWindow() {
   })
   mainWindow.loadFile('index.html')
   // opens devtools
-  mainWindow.webContents.openDevTools()
+  if(isDev)
+    mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
