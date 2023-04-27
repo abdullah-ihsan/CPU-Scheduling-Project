@@ -11,5 +11,8 @@
   },
   "devDependencies": {
     "electron": "^24.1.2"
+  },
+  "dependencies": {
+    "toastify-js": "^1.12.0"
   }
 }
