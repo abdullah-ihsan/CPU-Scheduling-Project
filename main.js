@@ -4,6 +4,7 @@ const app = electron.app;
 const path = require('path');
 let mainWindow;
 const ipc = electron.ipcMain;
+const isMac = process.platform === 'darwin';
 
 
 function createWindow() {
@@ -41,5 +42,5 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit()
+  if (!isMac) app.quit()
 })
