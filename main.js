@@ -1,7 +1,6 @@
-const {BrowserWindow, app, Menu} = require('electron')
+const {BrowserWindow, app, Menu,ipcMain} = require('electron')
 const path = require('path');
 let mainWindow;
-const ipc = electron.ipcMain;
 const isMac = process.platform === 'darwin';
 
 //process.env.NODE_ENV !== 'production' // Set to production to exit dev more
@@ -9,7 +8,7 @@ const isDev = process.env.NODE_ENV !== 'production'
 
 
 
-function createWindow() {
+function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: isDev ? 1200 : 800,
     height: 600,
@@ -32,7 +31,7 @@ function createAboutWindow(){
     height: 500,
   })
 
-  aboutWindow.loadFile
+  aboutWindow.loadFile('about.html')
 }
 
 const menu = [
@@ -59,19 +58,22 @@ const menu = [
 ]
 
 app.whenReady().then(() => {
-  createWindow()
+  createMainWindow()
+  //implement menu
+  const mainMenu = Menu.buildFromTemplate(menu);
+  Menu.setApplicationMenu(mainMenu); 
 
   app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (BrowserWindow.getAllWindows().length === 0) createMainWindow()
   })
 
 
-  ipc.on('login-success', () => {
-    console.log('login ipc received');
+  ipcMain.on('login-success', () => {
+    console.log('login ipcMain received');
     mainWindow.loadFile('simulator/simulator-main.html');
   })
 
-  ipc.on('main-page', () => {
+  ipcMain.on('main-page', () => {
     mainWindow.loadFile('index.html');
   })
 
