@@ -1,5 +1,5 @@
 /* console.log("Hello world!") */
-let Process = function(name, arrival_time, burst_time, priority) {
+let Process = function (name, arrival_time, burst_time, priority) {
     this.name = name
     this.arrival_time = arrival_time
     this.burst_time = burst_time
@@ -7,19 +7,19 @@ let Process = function(name, arrival_time, burst_time, priority) {
     return this
 };
 
-let Bar = function(name, start, end) {
+let Bar = function (name, start, end) {
     this.name = name
     this.start = start
     this.end = end
     return this
 };
 
-function arrivalSort(a,b){
+let arrivalSort = (a, b) => {
     if (a.arrival_time < b.arrival_time)
-            return -1
-        if (a.arrival_time > b.arrival_time)
-            return 1    
-        return 0
+        return -1
+    if (a.arrival_time > b.arrival_time)
+        return 1
+    return 0
 }
 
 const inputArray = [
@@ -36,13 +36,13 @@ inputArray.push(new Process('P2', 4, 3, 2))
 inputArray.push(new Process('P3', 6, 5, 3))
 
 function FCFS() { //works 
-    inputArray.sort((a,b) => arrivalSort(a,b))
+    inputArray.sort(arrivalSort)
 
     let current_time = 0
 
     inputArray.forEach((process) => {
         let start = 0;
-        
+
         if (current_time > process.arrival_time)
             start = current_time
         else
@@ -50,16 +50,15 @@ function FCFS() { //works
 
         let end = start + process.burst_time
         current_time = end
-        
-        outputArray.push( new Bar(process.name, start, end) )
+
+        outputArray.push(new Bar(process.name, start, end))
     })
     console.log(outputArray)
 }
 FCFS()
 
 function preemptive_SJF() {
-    inputArray.sort((a,b) => arrivalSort(a,b))
-
+    inputArray.sort((a, b) => arrivalSort(a, b))
 
 
 }
