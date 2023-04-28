@@ -1,6 +1,4 @@
-const electron = require('electron');
-const BrowserWindow = electron.BrowserWindow;
-const app = electron.app;
+const {BrowserWindow, app, Menu} = require('electron')
 const path = require('path');
 let mainWindow;
 const ipc = electron.ipcMain;
@@ -26,6 +24,39 @@ function createWindow() {
   if(isDev)
     mainWindow.webContents.openDevTools();
 }
+
+function createAboutWindow(){
+  aboutWindow = new BrowserWindow({
+    title: 'About',
+    width: 500,
+    height: 500,
+  })
+
+  aboutWindow.loadFile
+}
+
+const menu = [
+  ...isMac? [{
+    label: app.name,
+    submenu: [{
+      label: 'About',
+      click: createAboutWindow
+    }
+    ]
+   }
+
+  ]:[],
+  {
+    role: 'fileMenu'
+  },
+  ...!isMac?[{
+    label: 'Help',
+    submenu:[{
+      label: 'About',
+      click: createAboutWindow
+    }]
+  }]:[],
+]
 
 app.whenReady().then(() => {
   createWindow()
