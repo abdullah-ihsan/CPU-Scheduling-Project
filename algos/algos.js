@@ -38,7 +38,7 @@ function FCFS() { //works
 
     let current_time = 0
 
-    inputArray.forEach( (process) => {
+    inputArray.forEach((process) => {
         let start = 0;
         
         if (current_time > process.arrival_time)
