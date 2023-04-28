@@ -55,14 +55,16 @@ function FCFS() { //works
 }
 FCFS()
 
-function SJF() {
+function preemptive_SJF() {
     inputArray.sort((a,b) => {
-        if (a.burst_time < b.burst_time)
+        if (a.arrival_time < b.arrival_time)
             return -1
-        if (a.burst_time > b.burst_time)
+        if (a.arrival_time > b.arrival_time)
             return 1    
         return 0
     })
-    //FCFS() XX
+
+    inputArray.forEach(process) {
+        
+    }
 }
-//SJF()
