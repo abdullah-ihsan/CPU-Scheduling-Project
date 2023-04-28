@@ -14,7 +14,7 @@ let Bar = function(name, start, end) {
     return this
 };
 
-function customSort(a,b){
+function arrivalSort(a,b){
     if (a.arrival_time < b.arrival_time)
             return -1
         if (a.arrival_time > b.arrival_time)
@@ -36,7 +36,7 @@ inputArray.push(new Process('P2', 4, 3, 2))
 inputArray.push(new Process('P3', 6, 5, 3))
 
 function FCFS() { //works 
-    inputArray.sort((a,b) => customSort(a,b))
+    inputArray.sort((a,b) => arrivalSort(a,b))
 
     let current_time = 0
 
@@ -58,8 +58,8 @@ function FCFS() { //works
 FCFS()
 
 function preemptive_SJF() {
-    inputArray.sort((a,b) => customSort(a,b))
+    inputArray.sort((a,b) => arrivalSort(a,b))
 
-    
+
 
 }
