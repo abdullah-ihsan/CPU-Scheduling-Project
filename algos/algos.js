@@ -54,7 +54,6 @@ function FCFS() { //works
 FCFS()
 
 function preemptive_SJF() {
-<<<<<<< HEAD
     inputArray.sort(arrivalSort)
 
     let current_time = 0
@@ -114,10 +113,6 @@ function priority_queue() {
         
         outputArray.push( new Bar(process.name, start, end) )
     })
-
-=======
-    inputArray.sort((a, b) => arrivalSort(a, b))
->>>>>>> 0262cb6f5dab88231e4e300bd508fd6230674eaa
 
 
 }
