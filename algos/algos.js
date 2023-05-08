@@ -70,6 +70,12 @@ function FCFS() { //works
     console.log(outputArray)
 }
 
+FCFS();
+
+function preemptive_sjf(){
+    
+}
+
 function non_preemptive_sjf() {
     inputArray.sort((a, b) => {
         if (a.arrival_time === b.arrival_time)
@@ -131,6 +137,8 @@ function non_preemptive_sjf() {
     }
     console.log(outputArray)
 }
+
+non_preemptive_sjf();
 
 function priority_queue() { // low number represents higher priority *works*
     inputArray.sort((a, b) => {
