@@ -42,12 +42,20 @@ inputArray.push(new Process('P6', 5, 4, 4))
 inputArray.push(new Process('P7', 7, 10, 10))
  */
 
+/* 
 inputArray.push(new Process('P1', 2, 6, 1))
 inputArray.push(new Process('P2', 5, 2, 1))
 inputArray.push(new Process('P3', 1, 8, 1))
 inputArray.push(new Process('P4', 0, 3, 1))
-inputArray.push(new Process('P5', 4, 4, 1))
+inputArray.push(new Process('P5', 4, 4, 1)) */
 
+//rr
+inputArray.push(new Process('P1', 0, 5, 1))
+inputArray.push(new Process('P2', 1, 6, 1))
+inputArray.push(new Process('P3', 2, 3, 1))
+inputArray.push(new Process('P4', 3, 1, 1))
+inputArray.push(new Process('P5', 4, 5, 1))
+inputArray.push(new Process('P6', 6, 4, 1))
 
 function FCFS() { //works 
     inputArray.sort(arrivalSort)
@@ -70,7 +78,7 @@ function FCFS() { //works
     console.log(outputArray)
 }
 
-function non_preemptive_sjf() {
+function non_preemptive_sjf() { // works (needs review)
     inputArray.sort((a, b) => {
         if (a.arrival_time === b.arrival_time)
             return a.burst_time - b.burst_time
@@ -155,11 +163,68 @@ function priority_queue() { // low number represents higher priority *works*
     
 }
 
-function round_robin(quanta) {
+function round_robin(quanta) { //works (needs review)
+    inputArray.sort((a, b) => {
+        return a.arrival_time - b.arrival_time
+    })
+    let larIndex = inputArray.findIndex((b) => {
+        return b.burst_time == Math.max.apply(Math,inputArray.map(function(o){return o.burst_time;}))
+    })
+    console.log("lar: " , larIndex)
+    //quanta divide | works
+    const quantized = [], completed = []
+    let largest_at = inputArray[inputArray.length - 1].arrival_time
+    for (let i = 0; i < inputArray.length; i++) {
+        let bt = inputArray[i].burst_time
+        const sliced_time = []
+        while (bt != 0) {
+            if (bt < quanta) {
+                sliced_time.push(bt)
+                break
+            }
+            sliced_time.push(quanta)
+            bt -= quanta
+        }
+        quantized.push(sliced_time)
+    }
+    console.log(quantized)
+    /* --new processes creating-- */
+    // current processes have their burst time changed
+    for (let i = 0; i < inputArray.length; i++) { 
+        inputArray[i].burst_time = quantized[i][0]
+        quantized[i].shift()
+        completed.push(inputArray[i])
+    } 
+    console.log(quantized)
+    console.log(completed)
+    let fact = 1
+    do {
+        for (let i = 0; i < inputArray.length; i++) {
+            if (quantized[i][0] != undefined) {
+                completed.push(new Process(inputArray[i].name, inputArray[i].arrival_time + quanta * fact, quantized[i].shift(), inputArray[i].priority))
+                fact++ 
+            }
+        } 
+        console.log(quantized[larIndex].length)
+    } while (quantized[larIndex].length != 0) 
     
+    /* console.log(quantized)
+    console.log(inputArray) */
+    completed.sort((a, b) => {
+       return a.arrival_time - b.arrival_time
+    })
+    let current_time = 0
+
+    for (let i = 0; i < completed.length; i++) {
+        let start = 0;
+        if (current_time > completed[i].arrival_time)
+            start = current_time
+        else
+            start = completed[i].arrival_time    
+        let end = start + completed[i].burst_time
+        current_time = end
+        outputArray.push(new PBar(completed[i].name, start, end, completed[i].priority)) 
+    }
+    console.log(outputArray)
 }
-
-//FCFS()
-//priority_queue()
-
 //////////////////////////////////////////////////////////////////////////////////////////
