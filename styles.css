@@ -1,11 +1,50 @@
-/* styles.css */
-
-/* Add styles here to customize the appearance of your app */
-body {
-    background-color: #e27777;
+h1 {
+    margin-top: 100px;
+    font-size: 36px;
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font: bolder;
 }
 
-h1{
-    font-family: sans-serif;
+.login-asking {
+    margin-top: 125px;
+    text-justify: auto;
     text-align: center;
+}
+
+#login {
+    margin-top: 25px;
+    height: 25px;
+    width: 120px;
+    border: hidden;
+    background-color: #F1B895;
+    border-radius: 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input {
+    margin-top: 10px;
+    margin-left: 10px;
+    height: 25px;
+    width: 200px;
+}
+
+#quit-button {
+    height: 20px;
+    width: 20px;
+    position:absolute; top: 10px; right: 10px;
+    border-radius: 50%;
+    border-style: hidden;
+    color: white;
+    background-color: crimson;
+}
+
+#quit-button:hover {
+    background-color: pink;
+}
+
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: #DFF6D8;
+    font: bolder
 }

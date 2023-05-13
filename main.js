@@ -2,43 +2,57 @@ const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
 const app = electron.app;
 const path = require('path');
-let mainWindow;
 const ipc = electron.ipcMain;
+const Notification = electron.Notification;
 
-function createWindow() {
-  mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js')
-    }
-  })
-  mainWindow.loadFile('index.html')
-  // opens devtools
-  mainWindow.webContents.openDevTools()
+
+const createWindow = () => {
+    const window = new BrowserWindow({
+        width: 400, 
+        height: 600,
+        titleBarStyle: 'hidden',
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
+    })
+    /* ipc.handle('ping', () => 'pong')
+    ipc.handle('buttonpressing', () => {
+        console.log('button has been pressed (api version) !!!')
+        return 'button has been pressed (webpage version)'
+    })
+    ipc.handle('second_press', () => {
+        console.log("something is getting printed laliho! 1")
+    }) */
+    window.removeMenu() 
+    window.loadFile('login_screen.html')
+    //window.webContents.openDevTools()
+}
+
+const NOTIFICATION_TITLE = 'Basic Notification'
+const NOTIFICATION_BODY = 'Notification from the Main process'
+
+function showNotification () {
+  new Notification({ title: NOTIFICATION_TITLE, body: NOTIFICATION_BODY }).show()
 }
 
 app.whenReady().then(() => {
-  createWindow()
+    createWindow()
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length == 0) createWindow()
+    })
 
-  app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
+    /* ipc.on('second', () => {
+        console.log("something is getting printed laliho! 2")
+    }) // loads files */
 
-
-  ipc.on('login-success', () => {
-    console.log('login ipc received');
-    mainWindow.loadFile('simulator/simulator-main.html');
-  })
-
-  ipc.on('main-page', () => {
-    mainWindow.loadFile('index.html');
-  })
+    ipc.on('quit_app', () => {
+        showNotification()
+        app.quit()
+    })
 
 })
 
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit()
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin')
+        app.quit()
 })
