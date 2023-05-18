@@ -35,30 +35,6 @@ let arrivalSort = (a, b) => {
 const inputArray = []
 const outputArray = []
 
-/* inputArray.push(new Process('P1', 0, 3, 2))
-inputArray.push(new Process('P2', 0, 1, 6))
-inputArray.push(new Process('P3', 1, 4, 3))
-inputArray.push(new Process('P4', 4, 2, 5))
-inputArray.push(new Process('P5', 6, 9, 7))
-inputArray.push(new Process('P6', 5, 4, 4))
-inputArray.push(new Process('P7', 7, 10, 10))
- */
-
-/* 
-inputArray.push(new Process('P1', 2, 6, 1))
-inputArray.push(new Process('P2', 5, 2, 1))
-inputArray.push(new Process('P3', 1, 8, 1))
-inputArray.push(new Process('P4', 0, 3, 1))
-inputArray.push(new Process('P5', 4, 4, 1)) */
-
-//rr
-/* inputArray.push(new Process('P1', 0, 5, 1))
-inputArray.push(new Process('P2', 1, 6, 1))
-inputArray.push(new Process('P3', 2, 3, 1))
-inputArray.push(new Process('P4', 3, 1, 1))
-inputArray.push(new Process('P5', 4, 5, 1))
-inputArray.push(new Process('P6', 6, 4, 1)) */
-
 function fill_inputArray(at, bt, pr) {
     inputArray.push(new Process('P' + process_no, at, bt, pr))
     process_no++
@@ -91,15 +67,16 @@ function FCFS(arr) { //works
     return out
 }
 
-function non_preemptive_sjf() { // works (needs review)
-    inputArray.sort((a, b) => {
+function non_preemptive_sjf(arr) { // works (needs review)
+    const out = []
+    arr.sort((a, b) => {
         if (a.arrival_time === b.arrival_time)
             return a.burst_time - b.burst_time
         else
             return a.arrival_time - b.arrival_time
     })
     let current_time = 0, total_time = 0
-    inputArray.forEach((process) => {
+    arr.forEach((process) => {
         total_time += process.burst_time
     })
     console.log(total_time)
@@ -109,7 +86,7 @@ function non_preemptive_sjf() { // works (needs review)
     //rearranging
     for (let i = 0; i <= total_time; i++) {
         let arrived_process
-        let coming = inputArray.filter((arrivals) => {
+        let coming = arr.filter((arrivals) => {
             return arrivals.arrival_time == i
         })
         if (coming.length == 1)
@@ -148,13 +125,14 @@ function non_preemptive_sjf() { // works (needs review)
             start = completed[i].arrival_time    
         let end = start + completed[i].burst_time
         current_time = end
-        outputArray.push(new Bar(completed[i].name, start, end)) 
+        out.push(new Bar(completed[i].name, start, end)) 
     }
-    console.log(outputArray)
+    console.log(out)
+    return out
 }
 
-function priority_queue() { // low number represents higher priority *works*
-    inputArray.sort((a, b) => {
+function priority_queue(arr) { // low number represents higher priority *works*
+    arr.sort((a, b) => {
         if (a.arrival_time >= b.arrival_time)
             return a.priority - b.priority
         else
@@ -162,33 +140,33 @@ function priority_queue() { // low number represents higher priority *works*
     })
     let current_time = 0
 
-    for (let i = 0; i < inputArray.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         let start = 0;
-        if (current_time > inputArray[i].arrival_time)
+        if (current_time > arr[i].arrival_time)
             start = current_time
         else
-            start = inputArray[i].arrival_time    
-        let end = start + inputArray[i].burst_time
+            start = arr[i].arrival_time    
+        let end = start + arr[i].burst_time
         current_time = end
-        outputArray.push(new PBar(inputArray[i].name, start, end, inputArray[i].priority)) 
+        out.push(new PBar(arr[i].name, start, end, arr[i].priority)) 
     }
-    console.log(outputArray)
-    
+    console.log(out)
+    return out
 }
 
-function round_robin(quanta) { //works (needs review)
-    inputArray.sort((a, b) => {
+function round_robin(quanta, arr) { //works (needs review)
+    arr.sort((a, b) => {
         return a.arrival_time - b.arrival_time
     })
-    let larIndex = inputArray.findIndex((b) => {
-        return b.burst_time == Math.max.apply(Math,inputArray.map(function(o){return o.burst_time;}))
+    let larIndex = arr.findIndex((b) => {
+        return b.burst_time == Math.max.apply(Math,arr.map(function(o){return o.burst_time;}))
     })
     console.log("lar: " , larIndex)
     //quanta divide | works
     const quantized = [], completed = []
-    let largest_at = inputArray[inputArray.length - 1].arrival_time
-    for (let i = 0; i < inputArray.length; i++) {
-        let bt = inputArray[i].burst_time
+    let largest_at = arr[arr.length - 1].arrival_time
+    for (let i = 0; i < arr.length; i++) {
+        let bt = arr[i].burst_time
         const sliced_time = []
         while (bt != 0) {
             if (bt < quanta) {
@@ -203,18 +181,18 @@ function round_robin(quanta) { //works (needs review)
     console.log(quantized)
     /* --new processes creating-- */
     // current processes have their burst time changed
-    for (let i = 0; i < inputArray.length; i++) { 
-        inputArray[i].burst_time = quantized[i][0]
+    for (let i = 0; i < arr.length; i++) { 
+        arr[i].burst_time = quantized[i][0]
         quantized[i].shift()
-        completed.push(inputArray[i])
+        completed.push(arr[i])
     } 
     console.log(quantized)
     console.log(completed)
     let fact = 1
     do {
-        for (let i = 0; i < inputArray.length; i++) {
+        for (let i = 0; i < arr.length; i++) {
             if (quantized[i][0] != undefined) {
-                completed.push(new Process(inputArray[i].name, inputArray[i].arrival_time + quanta * fact, quantized[i].shift(), inputArray[i].priority))
+                completed.push(new Process(arr[i].name, arr[i].arrival_time + quanta * fact, quantized[i].shift(), arr[i].priority))
                 fact++ 
             }
         } 
@@ -236,8 +214,34 @@ function round_robin(quanta) { //works (needs review)
             start = completed[i].arrival_time    
         let end = start + completed[i].burst_time
         current_time = end
-        outputArray.push(new PBar(completed[i].name, start, end, completed[i].priority)) 
+        out.push(new PBar(completed[i].name, start, end, completed[i].priority)) 
     }
-    console.log(outputArray)
+    console.log(out)
+    return out
 }
 //////////////////////////////////////////////////////////////////////////////////////////
+
+
+/* inputArray.push(new Process('P1', 0, 3, 2))
+inputArray.push(new Process('P2', 0, 1, 6))
+inputArray.push(new Process('P3', 1, 4, 3))
+inputArray.push(new Process('P4', 4, 2, 5))
+inputArray.push(new Process('P5', 6, 9, 7))
+inputArray.push(new Process('P6', 5, 4, 4))
+inputArray.push(new Process('P7', 7, 10, 10))
+ */
+
+/* 
+inputArray.push(new Process('P1', 2, 6, 1))
+inputArray.push(new Process('P2', 5, 2, 1))
+inputArray.push(new Process('P3', 1, 8, 1))
+inputArray.push(new Process('P4', 0, 3, 1))
+inputArray.push(new Process('P5', 4, 4, 1)) */
+
+//rr
+/* inputArray.push(new Process('P1', 0, 5, 1))
+inputArray.push(new Process('P2', 1, 6, 1))
+inputArray.push(new Process('P3', 2, 3, 1))
+inputArray.push(new Process('P4', 3, 1, 1))
+inputArray.push(new Process('P5', 4, 5, 1))
+inputArray.push(new Process('P6', 6, 4, 1)) */

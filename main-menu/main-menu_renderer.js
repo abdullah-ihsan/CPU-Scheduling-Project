@@ -42,7 +42,7 @@ function openNav() {
 
 function add_data_to_table() {
     var ta = document.getElementById('data-table');
-    var row = ta.insertRow(1)
+    var row = ta.insertRow(document.getElementById('data-table').rows.length)
     var cell1 = row.insertCell(0)
     var cell2 = row.insertCell(1)
     var cell3 = row.insertCell(2)
