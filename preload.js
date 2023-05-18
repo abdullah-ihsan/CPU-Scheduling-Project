@@ -12,8 +12,8 @@ window.addEventListener('DOMContentLoaded', () => {
   })
 
 contextBridge.exposeInMainWorld('api',{
-    /* ping: () => ipcRenderer.invoke('ping'),
-    buttonpressing: () => ipcRenderer.invoke('buttonpressing'),
-    second_press: () => ipcRenderer.invoke('second_press'),*/
-    send: (data) => ipcRenderer.send(data) 
+    login_press: () => ipcRenderer.invoke('login_press'),
+    send: (data) => ipcRenderer.send(data),
+    minimize: () => ipcRenderer.invoke('minimize')
+
 })

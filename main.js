@@ -5,40 +5,56 @@ const path = require('path');
 const ipc = electron.ipcMain;
 const Notification = electron.Notification;
 
-
-const createWindow = () => {
-    const window = new BrowserWindow({
+const createLoginWindow = () => {
+    const loginwindow = new BrowserWindow({
         width: 400, 
         height: 600,
         titleBarStyle: 'hidden',
         webPreferences: {
+            enableRemoteModule: true,
             preload: path.join(__dirname, 'preload.js')
         }
     })
-    /* ipc.handle('ping', () => 'pong')
-    ipc.handle('buttonpressing', () => {
-        console.log('button has been pressed (api version) !!!')
-        return 'button has been pressed (webpage version)'
+    ipc.handle('login_press', () => {
+        createMainWindow()
+        loginwindow.close()
     })
-    ipc.handle('second_press', () => {
-        console.log("something is getting printed laliho! 1")
-    }) */
-    window.removeMenu() 
-    window.loadFile('login_screen.html')
-    //window.webContents.openDevTools()
+
+    loginwindow.removeMenu() 
+    loginwindow.loadFile('login_screen.html')
+    loginwindow.webContents.openDevTools()
+}
+
+const createMainWindow = () => {
+    const mainwindow = new BrowserWindow({
+        width: 1200,
+        height: 1000,
+        titleBarStyle: 'hidden',
+        autoHideMenuBar: true,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
+    })
+    mainwindow.loadFile('main-menu/main-menu.html')
+    //mainwindow.webContents.openDevTools()
+    ipc.handle('minimize', () => {
+        mainwindow.minimize()
+    })
+
+    mainwindow.webContents.openDevTools()
 }
 
 const NOTIFICATION_TITLE = 'Basic Notification'
 const NOTIFICATION_BODY = 'Notification from the Main process'
 
-function showNotification () {
+/* function showNotification () {
   new Notification({ title: NOTIFICATION_TITLE, body: NOTIFICATION_BODY }).show()
-}
+} */
 
 app.whenReady().then(() => {
-    createWindow()
+    createLoginWindow()
     app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length == 0) createWindow()
+        if (BrowserWindow.getAllWindows().length == 0) createLoginWindow()
     })
 
     /* ipc.on('second', () => {
@@ -46,10 +62,9 @@ app.whenReady().then(() => {
     }) // loads files */
 
     ipc.on('quit_app', () => {
-        showNotification()
+        //showNotification()
         app.quit()
     })
-
 })
 
 app.on('window-all-closed', () => {

@@ -6,21 +6,25 @@
   <meta charset="UTF-8">
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-  <link href="./styles.css" rel="stylesheet">
+  <link href="./style.css" rel="stylesheet">
   <title>Login Screen</title>
 </head>
 
 <body>
   <h1>CPU Scheduling Simulator</h1>
   <div class = "login-asking">
-    <p>Enter login ID and password</p>
-    <form>
+    <!--
+      <p>Enter login ID and password</p>
+    <form id="log-in-form">
+      <table id="login-table">
       <label for='username'><b>Username: </b></label>
-      <input type='text' id='username' name='username'><br><br>
+      <input type='text' id='username' name='u'><br><br>
       <label for='pass'><b>Password: </b></label>
-      <input type='password' id='pass' name='pass'>
+      <input type='password' id='pass' name='p'>
+      </table> 
     </form>
-    <button id = 'login'><b>Login</b></button>
+  -->
+    <button id = 'login'><b>Start</b></button>
   </div>
 </body>
 <script src="renderer.js"></script>

@@ -1,24 +1,15 @@
+
 document.addEventListener('DOMContentLoaded', () => {
-  /* const func = async () => {
-      const response = await window.api.ping()
-      console.log(response)
-  }
+    document.getElementById('quit-button').addEventListener('click', () => {
+        console.log("APP QUIT")
+        window.api.send('quit_app')
+    })
 
-  document.getElementById("go-button").addEventListener('click', async () => {
-      const response = await window.api.buttonpressing();
-      console.log(response)
-  });
-
-  document.getElementById("second-button").addEventListener('click', async () => {
-      window.api.second_press()
-      window.api.send('second')
-  })
-  func() */
+    document.getElementById('login').addEventListener('click', () => {
+        window.close()
+        window.api.login_press()
+    })
 
 
-  document.getElementById('quit-button').addEventListener('click', () => {
-      console.log("APP QUIT")
-      window.api.send('quit_app')
-  })
-});
-
+    //document.querySelector('#login').addEventListener()
+})
