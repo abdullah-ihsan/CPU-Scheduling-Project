@@ -132,6 +132,7 @@ function non_preemptive_sjf(arr) { // works (needs review)
 }
 
 function priority_queue(arr) { // low number represents higher priority *works*
+    const out = []
     arr.sort((a, b) => {
         if (a.arrival_time >= b.arrival_time)
             return a.priority - b.priority
@@ -155,6 +156,7 @@ function priority_queue(arr) { // low number represents higher priority *works*
 }
 
 function round_robin(quanta, arr) { //works (needs review)
+    const out = []
     arr.sort((a, b) => {
         return a.arrival_time - b.arrival_time
     })

@@ -24,6 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('schedule-button').addEventListener('click', () => {
         if (fcfs_flag) {
             console.log(FCFS(inputArray))
+        } else if (sjf_flag) {
+            console.log(non_preemptive_sjf(inputArray))
+        } else if (pr_flag) {
+            console.log(priority_queue(inputArray))
+        } else if (rr_flag) {
+            console.log(round_robin(5, inputArray))
         }
     })
 })
@@ -55,25 +61,30 @@ function add_data_to_table() {
 
 let fcfs_flag = false, sjf_flag = false, pr_flag = false, rr_flag = false
 function select_algorithm(navbar_id) {
+    let txt = document.getElementById('algo-display')
     if (navbar_id === 'fcfs-sel') {
-        fcfs_flag = true
+        fcfs_flag = true;
         sjf_flag = false
         pr_flag = false
         rr_flag = false
+        txt.innerHTML = "FCFS SELECTED"
     } else if (navbar_id === 'np-sjf-sel') {
         fcfs_flag = false
         sjf_flag = true
         pr_flag = false
         rr_flag = false
+        txt.innerHTML = "SJF SELECTED"
     } else if (navbar_id === 'pr-sel') {
         fcfs_flag = false
         sjf_flag = false
         pr_flag = true
         rr_flag = false
+        txt.innerHTML = "PRIORITY SELECTED"
     } else if (navbar_id === 'rr-sel') {
         fcfs_flag = false
         sjf_flag = false
         pr_flag = false
         rr_flag = true
+        txt.innerHTML = "ROUND ROBIN SELECTED"
     }
 }

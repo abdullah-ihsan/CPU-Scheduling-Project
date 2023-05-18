@@ -100,6 +100,9 @@ td {
   }
   
   /* The navigation menu links */
+  
+  
+
   .sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
@@ -117,6 +120,8 @@ td {
   .sidenav a:focus{
     color:rgb(255, 0, 0)
   }
+  
+  
 
   /* Position and style the close button (top right corner) */
   .sidenav .closebtn {
