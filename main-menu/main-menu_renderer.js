@@ -30,7 +30,21 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(priority_queue(inputArray))
         } else if (rr_flag) {
             console.log(round_robin(5, inputArray))
+        } else {
+            let txt = document.getElementById('algo-display')
+            txt.innerHTML = "ALGORITHM NOT SELECTED!! Select an algorithm."
         }
+        fcfs_flag = false
+        sjf_flag = false
+        pr_flag = false
+        rr_flag = false
+    })
+
+    document.getElementById('clear-data').addEventListener('click', () => {
+        inputArray = []
+        var ta = document.getElementById('data-table');
+        for (let i = 0; i < ta.rows.length; i++)
+            ta.deleteRow(i)
     })
 })
 
@@ -63,7 +77,7 @@ let fcfs_flag = false, sjf_flag = false, pr_flag = false, rr_flag = false
 function select_algorithm(navbar_id) {
     let txt = document.getElementById('algo-display')
     if (navbar_id === 'fcfs-sel') {
-        fcfs_flag = true;
+        fcfs_flag = true
         sjf_flag = false
         pr_flag = false
         rr_flag = false

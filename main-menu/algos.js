@@ -32,8 +32,8 @@ let arrivalSort = (a, b) => {
     return 0
 }
 
-const inputArray = []
-const outputArray = []
+let inputArray = []
+let outputArray = []
 
 function fill_inputArray(at, bt, pr) {
     inputArray.push(new Process('P' + process_no, at, bt, pr))
