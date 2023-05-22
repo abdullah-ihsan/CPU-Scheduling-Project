@@ -61,7 +61,7 @@ function FCFS(arr) { //works
         let end = start + process.burst_time
         current_time = end
         
-        out.push(new Bar(process.name, start, end))
+        out.push(new PBar(process.name, start, end, 0))
     })
     console.log(out)
     return out
@@ -125,7 +125,7 @@ function non_preemptive_sjf(arr) { // works (needs review)
             start = completed[i].arrival_time    
         let end = start + completed[i].burst_time
         current_time = end
-        out.push(new Bar(completed[i].name, start, end)) 
+        out.push(new PBar(completed[i].name, start, end, 0)) 
     }
     console.log(out)
     return out

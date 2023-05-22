@@ -2,10 +2,10 @@ let DATA = {
     type: 'bar',
     data:
     {
-        labels: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'],
+        labels: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'], //name of processes
         datasets:
             [{
-                label: '# of Votes',
+                label: 'Process Timings',
                 data: [
                     ['0', '3'],
                     ['3', '6'],

@@ -22,18 +22,23 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     document.getElementById('schedule-button').addEventListener('click', () => {
+        let resultant = []
         if (fcfs_flag) {
-            console.log(FCFS(inputArray))
+            resultant = FCFS(inputArray)
         } else if (sjf_flag) {
-            console.log(non_preemptive_sjf(inputArray))
+            resultant = non_preemptive_sjf(inputArray)
         } else if (pr_flag) {
-            console.log(priority_queue(inputArray))
+            resultant = priority_queue(inputArray)
         } else if (rr_flag) {
-            console.log(round_robin(5, inputArray))
+            resultant = round_robin(inputArray)
         } else {
             let txt = document.getElementById('algo-display')
             txt.innerHTML = "ALGORITHM NOT SELECTED!! Select an algorithm."
         }
+
+        console.log(resultant)
+        
+
         fcfs_flag = false
         sjf_flag = false
         pr_flag = false
