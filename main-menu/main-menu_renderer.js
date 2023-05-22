@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
         sjf_flag = false
         pr_flag = false
         rr_flag = false
+
+        
     })
 
     document.getElementById('clear-data').addEventListener('click', () => {
