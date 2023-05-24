@@ -1,4 +1,6 @@
+//const { Chart } = require('chart.js')
 const { contextBridge, ipcRenderer } = require("electron")
+
 
 window.addEventListener('DOMContentLoaded', () => {
     const replaceText = (selector, text) => {
@@ -16,4 +18,9 @@ contextBridge.exposeInMainWorld('api',{
     send: (data) => ipcRenderer.send(data),
     minimize: () => ipcRenderer.invoke('minimize')
 
+})
+
+contextBridge.exposeInMainWorld('Chart', {
+  chartCreate: (ctx, data) => Chart(ctx, data),
+  chartDelete: () => Chart.clear()
 })

@@ -1,3 +1,49 @@
+/////////////////////////////////////////////////////////
+
+let DATA = {
+    type: 'bar',
+    data:
+    {
+        labels: [], //name of processes
+        datasets:
+            [{
+                label: 'Process Timings',
+                data: [ ],
+                borderWidth: 1,
+                barPercentage: 0.75
+            }],
+    },
+    options:
+    {
+        indexAxis: 'y',
+        scales:
+        {
+            y:
+            {
+                beginAtZero: true
+            }
+        }
+    }
+}
+
+function jsonReady(out) 
+{
+    DATA.data.labels = out.map(a => a.name)
+    DATA.data.datasets.data = [
+        out.map(a => a.start),
+        out.map(a => a.end)
+    ].reduce((acc, row) => row.map((_, i) => [...(acc[i] || []), row[i]]), []);
+    //DATA.data.datasets.data = DATA.data.datasets.data[0].map((col, i) => DATA.data.datasets.data.map(row => row[i]))
+
+/*     console.log(DATA.data.labels)
+    console.log(DATA.data.datasets.data) */
+
+    console.log(DATA)
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('quit-button').addEventListener('click', () => {
         console.log("APP QUIT")
@@ -44,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             jsonReady(resultant)
             /* const ctx = document.getElementById('gantt-chart');
             new Chart(ctx, DATA); */
+            Chart.chartCreate(document.getElementById('gantt-chart'), DATA)
         }
 
         fcfs_flag = false
@@ -117,45 +164,3 @@ function select_algorithm(navbar_id) {
 }
 
 
-/////////////////////////////////////////////////////////
-
-let DATA = {
-    type: 'bar',
-    data:
-    {
-        labels: [], //name of processes
-        datasets:
-            [{
-                label: 'Process Timings',
-                data: [ ],
-                borderWidth: 1,
-                barPercentage: 0.75
-            }],
-    },
-    options:
-    {
-        indexAxis: 'y',
-        scales:
-        {
-            y:
-            {
-                beginAtZero: true
-            }
-        }
-    }
-}
-
-function jsonReady(out) 
-{
-    DATA.data.labels = out.map(a => a.name)
-    DATA.data.datasets.data = [
-        out.map(a => a.start),
-        out.map(a => a.end)
-    ].reduce((acc, row) => row.map((_, i) => [...(acc[i] || []), row[i]]), []);
-    //DATA.data.datasets.data = DATA.data.datasets.data[0].map((col, i) => DATA.data.datasets.data.map(row => row[i]))
-
-/*     console.log(DATA.data.labels)
-    console.log(DATA.data.datasets.data) */
-
-    console.log(DATA)
-}
