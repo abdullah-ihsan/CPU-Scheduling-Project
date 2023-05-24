@@ -2,7 +2,7 @@ let DATA = {
     type: 'bar',
     data:
     {
-        labels: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'], //name of processes
+        labels: [], //name of processes
         datasets:
             [{
                 label: 'Process Timings',
@@ -32,3 +32,12 @@ let DATA = {
     }
 }
 
+function jsonReady(out) 
+{
+    DATA.data.labels = out.map(a => a.names)
+    DATA.data.datasets.data = [
+        out.map(a => a.start),
+        out.map(a => a.end)
+    ]
+    DATA.data.datasets.data = DATA.data.datasets.data[0].map((col, i) => DATA.data.datasets.data.map(row => row[i]));
+}

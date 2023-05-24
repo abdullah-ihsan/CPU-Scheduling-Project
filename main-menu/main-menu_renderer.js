@@ -22,7 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     document.getElementById('schedule-button').addEventListener('click', () => {
-        let resultant = []
+        let resultant
+        let universal_flag = true
         if (fcfs_flag) {
             resultant = FCFS(inputArray)
         } else if (sjf_flag) {
@@ -34,16 +35,21 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             let txt = document.getElementById('algo-display')
             txt.innerHTML = "ALGORITHM NOT SELECTED!! Select an algorithm."
+            universal_flag = false
         }
 
-        console.log(resultant)
-        
+        if (universal_flag) 
+        { 
+            console.log("Resultant: \n" + resultant)
+            jsonReady(resultant)
+            /* const ctx = document.getElementById('gantt-chart');
+            new Chart(ctx, DATA); */
+        }
 
         fcfs_flag = false
         sjf_flag = false
         pr_flag = false
         rr_flag = false
-
         
     })
 
@@ -108,4 +114,48 @@ function select_algorithm(navbar_id) {
         rr_flag = true
         txt.innerHTML = "ROUND ROBIN SELECTED"
     }
+}
+
+
+/////////////////////////////////////////////////////////
+
+let DATA = {
+    type: 'bar',
+    data:
+    {
+        labels: [], //name of processes
+        datasets:
+            [{
+                label: 'Process Timings',
+                data: [ ],
+                borderWidth: 1,
+                barPercentage: 0.75
+            }],
+    },
+    options:
+    {
+        indexAxis: 'y',
+        scales:
+        {
+            y:
+            {
+                beginAtZero: true
+            }
+        }
+    }
+}
+
+function jsonReady(out) 
+{
+    DATA.data.labels = out.map(a => a.name)
+    DATA.data.datasets.data = [
+        out.map(a => a.start),
+        out.map(a => a.end)
+    ].reduce((acc, row) => row.map((_, i) => [...(acc[i] || []), row[i]]), []);
+    //DATA.data.datasets.data = DATA.data.datasets.data[0].map((col, i) => DATA.data.datasets.data.map(row => row[i]))
+
+/*     console.log(DATA.data.labels)
+    console.log(DATA.data.datasets.data) */
+
+    console.log(DATA)
 }
