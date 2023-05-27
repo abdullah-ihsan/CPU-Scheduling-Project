@@ -1,5 +1,8 @@
-/////////////////////////////////////////////////////////
+function transpose(matrix) {
+    return matrix[0].map((col, i) => matrix.map(row => row[i]));
+}
 
+/////////////////////////////////////////////////////////
 let DATA = {
     type: 'bar',
     data:
@@ -8,9 +11,7 @@ let DATA = {
         datasets:
             [{
                 label: 'Process Timings',
-                data: [ ],
-                borderWidth: 1,
-                barPercentage: 0.75
+                data: []
             }],
     },
     options:
@@ -20,25 +21,29 @@ let DATA = {
         {
             y:
             {
-                beginAtZero: true
+                beginAtZero: false
             }
         }
     }
 }
 
-function jsonReady(out) 
+function objectReady(out) 
 {
     DATA.data.labels = out.map(a => a.name)
-    DATA.data.datasets.data = [
+    DATA.data.datasets[0].data = transpose([
         out.map(a => a.start),
         out.map(a => a.end)
-    ].reduce((acc, row) => row.map((_, i) => [...(acc[i] || []), row[i]]), []);
-    //DATA.data.datasets.data = DATA.data.datasets.data[0].map((col, i) => DATA.data.datasets.data.map(row => row[i]))
+    ])
+
+    //DATA.data.datasets.data = DATA.data.datasets[0].data[0].map((col, i) => DATA.data.datasets[0].data.map(row => row[i]))
 
 /*     console.log(DATA.data.labels)
     console.log(DATA.data.datasets.data) */
 
-    console.log(DATA)
+    console.log(transpose([
+        out.map(a => a.start),
+        out.map(a => a.end)
+    ]))
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,35 +68,32 @@ document.addEventListener('DOMContentLoaded', () => {
         add_data_to_table()
     })
 
-    document.getElementById('print-process').addEventListener('click', () => {
-        console_process()
-    })
-
     document.getElementById('schedule-button').addEventListener('click', () => {
         let resultant
-        let universal_flag = true
         if (fcfs_flag) {
             resultant = FCFS(inputArray)
+            objectReady(resultant)
         } else if (sjf_flag) {
             resultant = non_preemptive_sjf(inputArray)
+            objectReady(resultant)
         } else if (pr_flag) {
             resultant = priority_queue(inputArray)
+            objectReady(resultant)
         } else if (rr_flag) {
-            resultant = round_robin(inputArray)
+            resultant = round_robin(3,inputArray)
+            objectReady(resultant)
         } else {
             let txt = document.getElementById('algo-display')
             txt.innerHTML = "ALGORITHM NOT SELECTED!! Select an algorithm."
-            universal_flag = false
         }
 
-        if (universal_flag) 
-        { 
-            console.log("Resultant: \n" + resultant)
-            jsonReady(resultant)
-            /* const ctx = document.getElementById('gantt-chart');
-            new Chart(ctx, DATA); */
-            Chart.chartCreate(document.getElementById('gantt-chart'), DATA)
-        }
+        
+        console.log(DATA.data.datasets[0].data)
+        //objectReady(resultant)
+        /* const ctx = document.getElementById('gantt-chart');
+        new Chart(ctx, DATA); */
+        //Chart.chartCreate(document.getElementById('gantt-chart'), DATA)
+        
 
         fcfs_flag = false
         sjf_flag = false
@@ -162,5 +164,3 @@ function select_algorithm(navbar_id) {
         txt.innerHTML = "ROUND ROBIN SELECTED"
     }
 }
-
-

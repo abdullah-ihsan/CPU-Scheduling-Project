@@ -1,4 +1,5 @@
 //const { Chart } = require('chart.js')
+//import Chart from 'chart.js/auto';
 const { contextBridge, ipcRenderer } = require("electron")
 
 
@@ -13,6 +14,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   })
 
+/* contextBridge.exposeInMainWorld('Chart', {
+  chartCreate: (ctx, data) => Chart(ctx, data),
+  chartDelete: () => Chart.clear()
+}) */
+
 contextBridge.exposeInMainWorld('api',{
     login_press: () => ipcRenderer.invoke('login_press'),
     send: (data) => ipcRenderer.send(data),
@@ -20,7 +26,3 @@ contextBridge.exposeInMainWorld('api',{
 
 })
 
-contextBridge.exposeInMainWorld('Chart', {
-  chartCreate: (ctx, data) => Chart(ctx, data),
-  chartDelete: () => Chart.clear()
-})

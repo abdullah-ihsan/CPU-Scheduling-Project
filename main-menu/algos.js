@@ -157,6 +157,9 @@ function priority_queue(arr) { // low number represents higher priority *works*
 
 function round_robin(quanta, arr) { //works (needs review)
     const out = []
+    /* arr.sort((a, b) => {
+        return a.arrival_time - b.arrival_time
+    }) */
     arr.sort((a, b) => {
         return a.arrival_time - b.arrival_time
     })
