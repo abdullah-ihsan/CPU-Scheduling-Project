@@ -69,7 +69,7 @@ function FCFS(arr) { //works
 
 function non_preemptive_sjf(arr) { // works (needs review)
     const out = []
-    arr.sort((a, b) => {
+    arr.sort((a, b) => { // sort (if arrival time same then sorting by burst time)
         if (a.arrival_time === b.arrival_time)
             return a.burst_time - b.burst_time
         else
@@ -77,47 +77,48 @@ function non_preemptive_sjf(arr) { // works (needs review)
     })
     let current_time = 0, total_time = 0
     arr.forEach((process) => {
-        total_time += process.burst_time
+        total_time += process.burst_time // calculating total time for scheduling
     })
     console.log(total_time)
 
-    const arrived = [], executing = [], waiting = [], completed = []
+    const executing = [], waiting = [], completed = []
     let waiting_time = 0
     //rearranging
     for (let i = 0; i <= total_time; i++) {
         let arrived_process
-        let coming = arr.filter((arrivals) => {
+        let coming = arr.filter((arrivals) => { // coming: array containing processes with same arrival time i
             return arrivals.arrival_time == i
         })
-        if (coming.length == 1)
-            arrived_process = coming[0]
+        if (coming.length == 1) // if the coming array has one process,
+            arrived_process = coming[0] // the process is then arriving at time i
         else if (coming.length > 1) {
-            coming.sort((a, b) => {
-                a.burst_time - b.burst_time
+            coming.sort((a, b) => { 
+                a.burst_time - b.burst_time // soritng by burst time if coming process > 1
             })
-            arrived_process = coming.shift()
-            waiting.push(coming.pop())
+            arrived_process = coming.shift() //shifted (the one with smallest burst time) to arrived_process (not an array)
+            waiting.push(coming.pop()) // popped (the one with largest burst time) to waiting list 
         }
 
-        if (!executing.length && arrived_process != undefined) {
-            executing.push(arrived_process)
-            waiting_time = i
+        if (!executing.length && arrived_process != undefined) { //if executing array is empty,
+            executing.push(arrived_process) // push the arrived process in the executing array
+            waiting_time = i    // the time at which the process is pushed is the waiting time
         }
-        else if (executing.length && arrived_process != undefined) {
-            waiting.push(arrived_process)
+        else if (executing.length && arrived_process != undefined) { // if executing array is NOT empty
+            waiting.push(arrived_process)   //the arrived process is pushed into waiting queue
             waiting.sort((a, b) => {
-                return a.burst_time - b.burst_time
-            })
+                return a.burst_time - b.burst_time  //waiting queue sorted by burst time always
+            })  
         }
-        if ((executing.length && waiting_time + executing[0].burst_time == i)) {
-            completed.push(executing.pop())
-            if (waiting.length) {
-                executing.push(waiting.shift())
-                waiting_time = i
+
+        if ((executing.length && waiting_time + executing[0].burst_time == i)) {  //if waiting time + burst time of executing process  == current time
+            completed.push(executing.pop()) // when the executing process has done executing, it is removed from exeuting array and moved to completed array
+            if (waiting.length) { //and if waiting list is not empty
+                executing.push(waiting.shift()) //the shortest job will be shifted to executing array
+                waiting_time = i    // with waiting time as current time i
             }
         }
     }
-    for (let i = 0; i < completed.length; i++) {
+    for (let i = 0; i < completed.length; i++) { // for calculation of gantt chart data
         let start = 0;
         if (current_time > completed[i].arrival_time)
             start = current_time
@@ -157,40 +158,37 @@ function priority_queue(arr) { // low number represents higher priority *works*
 
 function round_robin(quanta, arr) { //works (needs review)
     const out = []
-    /* arr.sort((a, b) => {
-        return a.arrival_time - b.arrival_time
-    }) */
-    arr.sort((a, b) => {
+    arr.sort((a, b) => { // first sorting processes by arrival time
         return a.arrival_time - b.arrival_time
     })
-    let larIndex = arr.findIndex((b) => {
+    let larIndex = arr.findIndex((b) => {   //finding the index with the largest burst_time
         return b.burst_time == Math.max.apply(Math,arr.map(function(o){return o.burst_time;}))
     })
     console.log("lar: " , larIndex)
     //quanta divide | works
     const quantized = [], completed = []
-    let largest_at = arr[arr.length - 1].arrival_time
-    for (let i = 0; i < arr.length; i++) {
-        let bt = arr[i].burst_time
+    let largest_at = arr[arr.length - 1].arrival_time   // largest arrival time in the array (last process)
+    for (let i = 0; i < arr.length; i++) {  // for looping through all processes
+        let bt = arr[i].burst_time  // burst time of current process (bt)
         const sliced_time = []
         while (bt != 0) {
-            if (bt < quanta) {
-                sliced_time.push(bt)
+            if (bt < quanta) { // sliced time array contains all burst times of a process divided into quanta
+                sliced_time.push(bt) // if bt smaller than quanta then pushed and move to next process
                 break
             }
-            sliced_time.push(quanta)
+            sliced_time.push(quanta) // value of quanta is pushed until bt is less than quanta
             bt -= quanta
         }
         quantized.push(sliced_time)
     }
-    console.log(quantized)
+    console.log(quantized) // quantized array contains new burst times of all processes
     /* --new processes creating-- */
     // current processes have their burst time changed
     for (let i = 0; i < arr.length; i++) { 
         arr[i].burst_time = quantized[i][0]
         quantized[i].shift()
         completed.push(arr[i])
-    } 
+    }  // new burst_times are assigned
     console.log(quantized)
     console.log(completed)
     let fact = 1
@@ -204,8 +202,8 @@ function round_robin(quanta, arr) { //works (needs review)
         console.log(quantized[larIndex].length)
     } while (quantized[larIndex].length != 0) 
     
-    /* console.log(quantized)
-    console.log(inputArray) */
+    // new processes are made in the above do while loop and pushed into the completed array
+
     completed.sort((a, b) => {
        return a.arrival_time - b.arrival_time
     })
