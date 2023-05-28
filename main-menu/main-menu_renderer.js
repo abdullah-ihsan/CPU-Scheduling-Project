@@ -80,11 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
             resultant = priority_queue(inputArray)
             objectReady(resultant)
         } else if (rr_flag) {
-            resultant = round_robin(3,inputArray)
+            var quanta_number = parseInt(document.getElementById("quan").value)
+            resultant = round_robin(quanta_number, inputArray)
             objectReady(resultant)
         } else {
             let txt = document.getElementById('algo-display')
             txt.innerHTML = "ALGORITHM NOT SELECTED!! Select an algorithm."
+            
         }
 
         
@@ -162,5 +164,7 @@ function select_algorithm(navbar_id) {
         pr_flag = false
         rr_flag = true
         txt.innerHTML = "ROUND ROBIN SELECTED"
+        document.getElementById('quanta-field').innerHTML = 
+        '<input class="form-control" onfocus="this.value="" type="number" id="quan" name="Quan" class="times" placeholder="Quanta">'
     }
 }
