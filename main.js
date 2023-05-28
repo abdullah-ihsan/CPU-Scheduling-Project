@@ -29,7 +29,7 @@ const createMainWindow = () => {
     const mainwindow = new BrowserWindow({
         width: 1200,
         height: 1000,
-        //titleBarStyle: 'hidden',
+        titleBarStyle: 'hidden',
         autoHideMenuBar: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
@@ -56,6 +56,10 @@ app.whenReady().then(() => {
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length == 0) createLoginWindow()
     })
+
+    /* ipc.on('second', () => {
+        console.log("something is getting printed laliho! 2")
+    }) // loads files */
 
     ipc.on('quit_app', () => {
         //showNotification()
