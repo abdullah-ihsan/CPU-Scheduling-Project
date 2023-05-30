@@ -9,10 +9,10 @@ let DATA = {
     {
         labels: [], //name of processes
         datasets:
-            [{
+            [/* {
                 label: 'Process Timings',
                 data: []
-            }],
+            } */],
     },
     options:
     {
@@ -27,23 +27,48 @@ let DATA = {
     }
 }
 
-function objectReady(out) 
+function objectReady(out) // for fcfs, sjf and priority
 {
+    DATA.data.datasets = []
+    DATA.data.datasets.push({
+        label: 'Process Timings',
+        data: []
+    })
     DATA.data.labels = out.map(a => a.name)
     DATA.data.datasets[0].data = transpose([
         out.map(a => a.start),
         out.map(a => a.end)
     ])
-
-    //DATA.data.datasets.data = DATA.data.datasets[0].data[0].map((col, i) => DATA.data.datasets[0].data.map(row => row[i]))
-
-/*     console.log(DATA.data.labels)
-    console.log(DATA.data.datasets.data) */
-
     console.log(transpose([
         out.map(a => a.start),
         out.map(a => a.end)
     ]))
+}
+
+function rrGraphData(out) {
+    DATA.data.labels = [... new Set(out.map(a => a.name))]
+    console.log(DATA.data.labels)
+    DATA.data.datasets = []
+    for (let i = 0; i < DATA.data.labels.length; i++) {
+        let graphcoords = []
+
+        
+        DATA.data.labels.forEach(element => {
+            const proc = out.find((o) => {
+                return o.name == element
+            })
+            if (typeof proc === 'undefined' || typeof proc === 'undefined')
+                graphcoords.push([0, 0])
+            else graphcoords.push([proc.start, proc.end])
+            out.shift()
+        })
+        console.log(graphcoords)
+        DATA.data.datasets.push({
+            label: 'set' + (i + 1),
+            data: graphcoords
+        })
+    }
+    
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (rr_flag) {
             var quanta_number = parseInt(document.getElementById("quan").value)
             resultant = round_robin(quanta_number, inputArray)
-            objectReady(resultant)
+            rrGraphData(resultant)
         } else {
             let txt = document.getElementById('algo-display')
             txt.innerHTML = "ALGORITHM NOT SELECTED!! Select an algorithm."
@@ -107,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('clear-data').addEventListener('click', () => {
         inputArray = []
         var ta = document.getElementById('data-table');
-        for (let i = 0; i < ta.rows.length; i++)
+        for (let i = 1; i < ta.rows.length; i++)
             ta.deleteRow(i)
     })
 })
