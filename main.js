@@ -20,6 +20,8 @@ const createLoginWindow = () => {
         loginwindow.close()
     })
 
+    
+
     loginwindow.removeMenu() 
     loginwindow.loadFile('login_screen.html')
     loginwindow.webContents.openDevTools()

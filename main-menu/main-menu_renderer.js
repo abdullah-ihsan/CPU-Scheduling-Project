@@ -46,22 +46,22 @@ function objectReady(out) // for fcfs, sjf and priority
 }
 
 function rrGraphData(out) {
-    DATA.data.labels = [... new Set(out.map(a => a.name))]
+    DATA.data.labels = [... new Set(out.map(a => a.name))] // names of processes in order of name
     console.log(DATA.data.labels)
     DATA.data.datasets = []
-    for (let i = 0; i < DATA.data.labels.length; i++) {
+    for (let i = 0; i < DATA.data.labels.length; i++) { // i -> no of processes
         let graphcoords = []
-
-        
-        DATA.data.labels.forEach(element => {
-            const proc = out.find((o) => {
+        DATA.data.labels.forEach(element => { // process by process (preempted)
+            const proc = out.find((o) => { // proc (first process with name element)
                 return o.name == element
             })
-            if (typeof proc === 'undefined' || typeof proc === 'undefined')
-                graphcoords.push([0, 0])
-            else graphcoords.push([proc.start, proc.end])
-            out.shift()
+            if (typeof proc === 'undefined') graphcoords.push([0, 0])
+            else {
+                graphcoords.push([proc.start, proc.end])
+                out.shift()
+            }
         })
+
         console.log(graphcoords)
         DATA.data.datasets.push({
             label: 'set' + (i + 1),
@@ -71,7 +71,7 @@ function rrGraphData(out) {
     
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -111,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             let txt = document.getElementById('algo-display')
             txt.innerHTML = "ALGORITHM NOT SELECTED!! Select an algorithm."
-            
         }
 
         
@@ -131,8 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('clear-data').addEventListener('click', () => {
         inputArray = []
-        var ta = document.getElementById('data-table');
-        for (let i = 1; i < ta.rows.length; i++)
+        var ta = document.getElementById('data-table')
+        let s = ta.rows.length
+        for (let i = 1; i < s; i++)
             ta.deleteRow(i)
     })
 })
