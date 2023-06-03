@@ -219,7 +219,6 @@ function round_robin(quanta, arr) { //works (needs review)
         current_time = end
         out.push(new PBar(completed[i].name, start, end, completed[i].priority)) 
     }
-    console.log(out)
     return out
 }
 

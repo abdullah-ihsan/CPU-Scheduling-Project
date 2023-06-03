@@ -21,7 +21,8 @@ let DATA = {
         {
             y:
             {
-                beginAtZero: false
+                beginAtZero: false,
+                stacked: true
             }
         }
     }
@@ -53,7 +54,7 @@ function rrGraphData(out) {
         let graphcoords = []
         DATA.data.labels.forEach(element => { // process by process (preempted)
             const proc = out.find((o) => { // proc (first process with name element)
-                return o.name == element
+                return o.name === element
             })
             if (typeof proc === 'undefined') graphcoords.push([0, 0])
             else {
@@ -129,11 +130,12 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     document.getElementById('clear-data').addEventListener('click', () => {
-        inputArray = []
+        inputArray.length = 0
         var ta = document.getElementById('data-table')
         let s = ta.rows.length
         for (let i = 1; i < s; i++)
-            ta.deleteRow(i)
+            ta.deleteRow(1)
+        process_no = 1
     })
 })
 
@@ -150,12 +152,12 @@ function openNav() {
   }
 
 function add_data_to_table() {
-    var ta = document.getElementById('data-table');
-    var row = ta.insertRow(document.getElementById('data-table').rows.length)
-    var cell1 = row.insertCell(0)
-    var cell2 = row.insertCell(1)
-    var cell3 = row.insertCell(2)
-    var cell4 = row.insertCell(3)
+    let ta = document.getElementById('data-table');
+    let row = ta.insertRow(document.getElementById('data-table').rows.length)
+    let cell1 = row.insertCell(0)
+    let cell2 = row.insertCell(1)
+    let cell3 = row.insertCell(2)
+    let cell4 = row.insertCell(3)
     cell1.innerHTML = inputArray[inputArray.length - 1].name
     cell2.innerHTML = inputArray[inputArray.length - 1].arrival_time
     cell3.innerHTML = inputArray[inputArray.length - 1].burst_time
