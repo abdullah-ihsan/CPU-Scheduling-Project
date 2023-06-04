@@ -98,16 +98,32 @@ document.addEventListener('DOMContentLoaded', () => {
         let resultant
         if (fcfs_flag) {
             resultant = FCFS(inputArray)
+            resultant.sort((a, b) => {
+                console.log('a = ' + a.name.substring(1)) + ' b = ' + parseInt(b.name.substring(1))
+                return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
+            })
+            waiting_time_in_table(resultant)
             objectReady(resultant)
         } else if (sjf_flag) {
             resultant = non_preemptive_sjf(inputArray)
+            resultant.sort((a, b) => {
+                console.log('a = ' + a.name.substring(1)) + ' b = ' + parseInt(b.name.substring(1))
+                return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
+            })
+            waiting_time_in_table(resultant)
             objectReady(resultant)
         } else if (pr_flag) {
             resultant = priority_queue(inputArray)
+            resultant.sort((a, b) => {
+                console.log('a = ' + a.name.substring(1)) + ' b = ' + parseInt(b.name.substring(1))
+                return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
+            })
+            waiting_time_in_table(resultant)
             objectReady(resultant)
         } else if (rr_flag) {
             var quanta_number = parseInt(document.getElementById("quan").value)
             resultant = round_robin(quanta_number, inputArray)
+            waiting_time_in_table(resultant)
             rrGraphData(resultant)
         } else {
             let txt = document.getElementById('algo-display')
@@ -115,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         
-        console.log(DATA.data.datasets[0].data)
+        console.log(resultant)
         //objectReady(resultant)
         /* const ctx = document.getElementById('gantt-chart');
         new Chart(ctx, DATA); */
@@ -126,6 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
         sjf_flag = false
         pr_flag = false
         rr_flag = false
+
+        //let ta = document.getElementById('data-table');
+        
         
     })
 
@@ -144,12 +163,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
-  }
+}
 
-  function closeNav() {
+function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
-  }
+}
 
 function add_data_to_table() {
     let ta = document.getElementById('data-table');
@@ -173,18 +192,21 @@ function select_algorithm(navbar_id) {
         pr_flag = false
         rr_flag = false
         txt.innerHTML = "FCFS SELECTED"
+        document.getElementById('quanta-field').innerHTML = ''
     } else if (navbar_id === 'np-sjf-sel') {
         fcfs_flag = false
         sjf_flag = true
         pr_flag = false
         rr_flag = false
         txt.innerHTML = "SJF SELECTED"
+        document.getElementById('quanta-field').innerHTML = ''
     } else if (navbar_id === 'pr-sel') {
         fcfs_flag = false
         sjf_flag = false
         pr_flag = true
         rr_flag = false
         txt.innerHTML = "PRIORITY SELECTED"
+        document.getElementById('quanta-field').innerHTML = ''
     } else if (navbar_id === 'rr-sel') {
         fcfs_flag = false
         sjf_flag = false
@@ -193,5 +215,16 @@ function select_algorithm(navbar_id) {
         txt.innerHTML = "ROUND ROBIN SELECTED"
         document.getElementById('quanta-field').innerHTML = 
         '<input class="form-control" onfocus="this.value="" type="number" id="quan" name="Quan" class="times" placeholder="Quanta">'
+    }
+}
+
+function waiting_time_in_table(arr) {
+    let ta = document.getElementById('data-table')
+    //let head = document.getElementById('header-row')
+    //let new_col = document.createElement('th')
+    //head.innerHTML = head.innerHTML + '<th>Waiting Time</th>'
+    for (let i = 0; i < ta.rows.length - 1; i++) {
+        let cell = ta.rows[i + 1].insertCell(4)
+        cell.innerHTML = arr[i].end
     }
 }
