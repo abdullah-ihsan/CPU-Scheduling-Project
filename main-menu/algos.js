@@ -33,7 +33,7 @@ let arrivalSort = (a, b) => {
 }
 
 let inputArray = []
-let outputArray = []
+//let outputArray = []
 
 function fill_inputArray(at, bt, pr) {
     inputArray.push(new Process('P' + process_no, at, bt, pr))
@@ -202,7 +202,8 @@ function round_robin(quanta, arr) { //works (needs review)
             }
         } 
         console.log(quantized[larIndex].length)
-    } while (quantized[larIndex].length != 0) 
+    } /* while (quantized[larIndex].length != 0)  */while (quantized.some((slices) => slices.length !== 0))
+
     
     // new processes are made in the above do while loop and pushed into the completed array
 

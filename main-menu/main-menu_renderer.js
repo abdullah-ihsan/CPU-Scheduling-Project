@@ -74,7 +74,6 @@ function rrGraphData(out) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('quit-button').addEventListener('click', () => {
         console.log("APP QUIT")
@@ -102,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('a = ' + a.name.substring(1)) + ' b = ' + parseInt(b.name.substring(1))
                 return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
             })
-            waiting_time_in_table(resultant)
+            add_result_time(resultant)
             objectReady(resultant)
         } else if (sjf_flag) {
             resultant = non_preemptive_sjf(inputArray)
@@ -110,46 +109,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('a = ' + a.name.substring(1)) + ' b = ' + parseInt(b.name.substring(1))
                 return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
             })
-            waiting_time_in_table(resultant)
+            add_result_time(resultant)
             objectReady(resultant)
         } else if (pr_flag) {
             resultant = priority_queue(inputArray)
-            waiting_time_in_table(resultant)
+            add_result_time(resultant)
             objectReady(resultant)
         } else if (rr_flag) {
             var quanta_number = parseInt(document.getElementById("quan").value)
             resultant = round_robin(quanta_number, inputArray)
-            resultant.sort((a, b) => {
+           /*  resultant.sort((a, b) => {
                 console.log('a = ' + a.name.substring(1)) + ' b = ' + parseInt(b.name.substring(1))
                 return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
-            })
-            waiting_time_in_table(resultant)
+            }) */
+            add_result_time(resultant)
             rrGraphData(resultant)
         } else {
             let txt = document.getElementById('algo-display')
             txt.innerHTML = "ALGORITHM NOT SELECTED!! Select an algorithm."
         }
-
-        
         console.log(resultant)
-        //objectReady(resultant)
-        /* const ctx = document.getElementById('gantt-chart');
-        new Chart(ctx, DATA); */
-        //Chart.chartCreate(document.getElementById('gantt-chart'), DATA)
-        
-
         fcfs_flag = false
         sjf_flag = false
         pr_flag = false
         rr_flag = false
-
-        //let ta = document.getElementById('data-table');
-        
-        
     })
 
     document.getElementById('clear-data').addEventListener('click', () => {
-        inputArray.length = 0
+        inputArray.splice(0,inputArray.length)
         var ta = document.getElementById('data-table')
         let s = ta.rows.length
         for (let i = 1; i < s; i++)
@@ -157,8 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
         process_no = 1
     })
 })
-
-
 
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
@@ -218,11 +203,16 @@ function select_algorithm(navbar_id) {
     }
 }
 
-function waiting_time_in_table(arr) {
+function add_result_time(arr) {
     let ta = document.getElementById('data-table')
     //let head = document.getElementById('header-row')
     //let new_col = document.createElement('th')
     //head.innerHTML = head.innerHTML + '<th>Waiting Time</th>'
+    for (let i = 0; i < ta.rows.length - 1; i++) {
+        let cell = ta.rows[i + 1].insertCell(6)
+        cell.innerHTML = arr[i].start
+    }
+
     for (let i = 0; i < ta.rows.length - 1; i++) {
         let cell = ta.rows[i + 1].insertCell(4)
         cell.innerHTML = arr[i].end
