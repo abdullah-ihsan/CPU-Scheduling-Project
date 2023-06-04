@@ -114,15 +114,15 @@ document.addEventListener('DOMContentLoaded', () => {
             objectReady(resultant)
         } else if (pr_flag) {
             resultant = priority_queue(inputArray)
-            resultant.sort((a, b) => {
-                console.log('a = ' + a.name.substring(1)) + ' b = ' + parseInt(b.name.substring(1))
-                return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
-            })
             waiting_time_in_table(resultant)
             objectReady(resultant)
         } else if (rr_flag) {
             var quanta_number = parseInt(document.getElementById("quan").value)
             resultant = round_robin(quanta_number, inputArray)
+            resultant.sort((a, b) => {
+                console.log('a = ' + a.name.substring(1)) + ' b = ' + parseInt(b.name.substring(1))
+                return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
+            })
             waiting_time_in_table(resultant)
             rrGraphData(resultant)
         } else {

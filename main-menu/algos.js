@@ -93,10 +93,12 @@ function non_preemptive_sjf(arr) { // works (needs review)
             arrived_process = coming[0] // the process is then arriving at time i
         else if (coming.length > 1) {
             coming.sort((a, b) => { 
-                a.burst_time - b.burst_time // soritng by burst time if coming process > 1
+                return a.burst_time - b.burst_time // sorting by burst time if coming process > 1
             })
             arrived_process = coming.shift() //shifted (the one with smallest burst time) to arrived_process (not an array)
-            waiting.push(coming.pop()) // popped (the one with largest burst time) to waiting list 
+            do {
+            waiting.push(coming.shift())
+            } while (coming.length) // popped (the one with largest burst time) to waiting list
         }
 
         if (!executing.length && arrived_process != undefined) { //if executing array is empty,
