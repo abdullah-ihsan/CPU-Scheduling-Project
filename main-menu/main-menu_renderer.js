@@ -3,6 +3,7 @@ function transpose(matrix) {
 }
 
 /////////////////////////////////////////////////////////
+
 let DATA = {
     type: 'bar',
     data:
@@ -113,6 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
             objectReady(resultant)
         } else if (pr_flag) {
             resultant = priority_queue(inputArray)
+            resultant.sort((a, b) => {
+                console.log('a = ' + a.name.substring(1)) + ' b = ' + parseInt(b.name.substring(1))
+                return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
+            })
             add_result_time(resultant)
             objectReady(resultant)
         } else if (rr_flag) {
@@ -209,12 +214,12 @@ function add_result_time(arr) {
     //let new_col = document.createElement('th')
     //head.innerHTML = head.innerHTML + '<th>Waiting Time</th>'
     for (let i = 0; i < ta.rows.length - 1; i++) {
-        let cell = ta.rows[i + 1].insertCell(6)
+        let cell = ta.rows[i + 1].insertCell(4)
         cell.innerHTML = arr[i].start
     }
 
-    for (let i = 0; i < ta.rows.length - 1; i++) {
+    /* for (let i = 0; i < ta.rows.length - 1; i++) {
         let cell = ta.rows[i + 1].insertCell(4)
         cell.innerHTML = arr[i].end
-    }
+    } */
 }
