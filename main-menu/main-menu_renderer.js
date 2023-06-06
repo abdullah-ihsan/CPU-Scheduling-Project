@@ -73,6 +73,8 @@ function rrGraphData(out) {
     
 }
 
+let smallest_at
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -93,13 +95,21 @@ document.addEventListener('DOMContentLoaded', () => {
         )
         add_data_to_table()
     })
-
+    
     document.getElementById('schedule-button').addEventListener('click', () => {
+        smallest_at = Math.min(...arrivalColumn)
+        console.log("Smallest at = " + smallest_at)
+        if (smallest_at > 0) {
+            inputArray.forEach((t) => {
+                t.arrival_time -= smallest_at
+            })
+            let txt = document.getElementById('algo-display')
+            txt.innerHTML = "**ADJUSTED ARRIVAL TIME SO THE SCHEDULING STARTS AT TIME 0**"
+        }
         let resultant
         if (fcfs_flag) {
             resultant = FCFS(inputArray)
             resultant.sort((a, b) => {
-                console.log('a = ' + a.name.substring(1)) + ' b = ' + parseInt(b.name.substring(1))
                 return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
             })
             add_result_time(resultant)
@@ -107,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (sjf_flag) {
             resultant = non_preemptive_sjf(inputArray)
             resultant.sort((a, b) => {
-                console.log('a = ' + a.name.substring(1)) + ' b = ' + parseInt(b.name.substring(1))
                 return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
             })
             add_result_time(resultant)
@@ -142,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('clear-data').addEventListener('click', () => {
         inputArray.splice(0,inputArray.length)
+        arrivalColumn.splice(0, arrivalColumn.length)
         var ta = document.getElementById('data-table')
         let s = ta.rows.length
         for (let i = 1; i < s; i++)
@@ -160,6 +170,7 @@ function closeNav() {
     document.getElementById("main").style.marginLeft = "0";
 }
 
+const arrivalColumn = [], burstColumn = []
 function add_data_to_table() {
     let ta = document.getElementById('data-table');
     let row = ta.insertRow(document.getElementById('data-table').rows.length)
@@ -169,7 +180,9 @@ function add_data_to_table() {
     let cell4 = row.insertCell(3)
     cell1.innerHTML = inputArray[inputArray.length - 1].name
     cell2.innerHTML = inputArray[inputArray.length - 1].arrival_time
+    arrivalColumn.push(inputArray[inputArray.length - 1].arrival_time)
     cell3.innerHTML = inputArray[inputArray.length - 1].burst_time
+    burstColumn.push(inputArray[inputArray.length - 1].burst_time)
     cell4.innerHTML = inputArray[inputArray.length - 1].priority
 }
 
@@ -213,13 +226,27 @@ function add_result_time(arr) {
     //let head = document.getElementById('header-row')
     //let new_col = document.createElement('th')
     //head.innerHTML = head.innerHTML + '<th>Waiting Time</th>'
-    for (let i = 0; i < ta.rows.length - 1; i++) {
+    const completion_time = [], turnaround = [], waitingtime = []
+    for (let i = 0; i < ta.rows.length - 1; i++) { // completion time
         let cell = ta.rows[i + 1].insertCell(4)
-        cell.innerHTML = arr[i].start
+        cell.innerHTML = arr[i].end + smallest_at
+        completion_time.push(arr[i].end + smallest_at)
     }
 
-    /* for (let i = 0; i < ta.rows.length - 1; i++) {
-        let cell = ta.rows[i + 1].insertCell(4)
-        cell.innerHTML = arr[i].end
-    } */
+    for (let i = 0; i < ta.rows.length - 1; i++) { //turnaround
+        let cell = ta.rows[i + 1].insertCell(5)
+        cell.innerHTML = completion_time[i] - arrivalColumn[i]
+        turnaround.push(completion_time[i] - arrivalColumn[i])
+    }
+
+    for (let i = 0; i < ta.rows.length - 1; i++) { //waiting time
+        let cell = ta.rows[i + 1].insertCell(6)
+        cell.innerHTML = turnaround[i] - burstColumn[i]
+        waitingtime.push(turnaround[i] - burstColumn[i])
+    }
+    
+}
+
+function add_rr_time(arr) {
+
 }

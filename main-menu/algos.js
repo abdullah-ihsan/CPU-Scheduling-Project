@@ -45,6 +45,8 @@ function console_process() {
 }
 
 function FCFS(arr) { //works 
+    
+    //console.log('a0 : ' + arr[0].arrival_time)
     arr.sort(arrivalSort)
     const out = []
 
@@ -67,7 +69,7 @@ function FCFS(arr) { //works
     return out
 }
 
-function non_preemptive_sjf(arr) { // works (needs review)
+/* function non_preemptive_sjf(arr) { // works (needs review)
     const out = []
     arr.sort((a, b) => { // sort (if arrival time same then sorting by burst time)
         if (a.arrival_time === b.arrival_time)
@@ -132,6 +134,46 @@ function non_preemptive_sjf(arr) { // works (needs review)
     }
     console.log(out)
     return out
+} */
+
+function non_preemptive_sjf(arr) {
+    const out = []
+    const queue = []
+
+    let current_time = 0
+    let total_time = 0
+    arr.sort((a, b) => { // first sorting processes by arrival time
+        return a.arrival_time - b.arrival_time
+    })
+
+    arr.forEach((process) => {
+        total_time += process.burst_time // calculating total time for scheduling
+    })
+
+    while (current_time < total_time) {
+
+        // inserting all arived processes into queue
+        while (arr.length != 0 && arr[0].arrival_time <= current_time) {
+            queue.push(arr.shift())
+        }
+
+        // sorting arrived processes w.r.t burst time
+        queue.sort((a, b) => {
+            return a.burst_time - b.burst_time
+        })
+
+        let exec_process = queue.shift() // top most element of queue
+
+        let start = current_time
+        let end = start + exec_process.burst_time
+        out.push(new PBar(exec_process.name, start, end, 0))
+
+        current_time = end
+    }
+    out.forEach((bars) => {
+        console.log(bars)
+    })
+    return out
 }
 
 function priority_queue(arr) { // low number represents higher priority *works*
@@ -158,7 +200,7 @@ function priority_queue(arr) { // low number represents higher priority *works*
     return out
 }
 
-function round_robin(quanta, arr) { //works (needs review)
+/* function round_robin(quanta, arr) { //works (needs review)
     const out = []
     arr.sort((a, b) => { // first sorting processes by arrival time
         return a.arrival_time - b.arrival_time
@@ -184,7 +226,7 @@ function round_robin(quanta, arr) { //works (needs review)
         quantized.push(sliced_time)
     }
     console.log(quantized) // quantized array contains new burst times of all processes
-    /* --new processes creating-- */
+    // --new processes creating--
     // current processes have their burst time changed
     for (let i = 0; i < arr.length; i++) { 
         arr[i].burst_time = quantized[i][0]
@@ -202,7 +244,8 @@ function round_robin(quanta, arr) { //works (needs review)
             }
         } 
         console.log(quantized[larIndex].length)
-    } /* while (quantized[larIndex].length != 0)  */while (quantized.some((slices) => slices.length !== 0))
+    } // while (quantized[larIndex].length != 0) 
+    while (quantized.some((slices) => slices.length !== 0))
 
     
     // new processes are made in the above do while loop and pushed into the completed array
@@ -223,9 +266,44 @@ function round_robin(quanta, arr) { //works (needs review)
         out.push(new PBar(completed[i].name, start, end, completed[i].priority)) 
     }
     return out
+} */
+
+function round_robin(quanta, arr){
+    const out = []
+    const queue = []
+
+    arr.sort((a, b) => { // first sorting processes by arrival time
+        return a.arrival_time - b.arrival_time
+    })
+    console.log('a0 : ' + arr[0].arrival_time)
+    let total_time = 0
+    let current_time = 0
+
+    arr.forEach((process) => {
+        total_time += process.burst_time // calculating total time for scheduling
+    })
+
+    while(current_time < total_time){
+        
+        // inserting all arived processes into queue
+        //console.log('a0 : ' + arr)
+        while(arr.length != 0 && arr[0].arrival_time <= current_time){
+            queue.push(arr.shift())
+        }
+
+        // moving top to end
+        queue.push(queue.shift())
+
+        let start = current_time
+        let end = start + Math.min(queue[0].burst_time, quanta)
+        out.push(new PBar(queue[0].name, start, end, 0))
+
+        queue[0].burst_time -= (end - start)
+
+        current_time = end;
+    }
+    return out
 }
-
-
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
