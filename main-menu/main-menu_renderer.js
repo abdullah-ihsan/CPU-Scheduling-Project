@@ -140,13 +140,14 @@ document.addEventListener('DOMContentLoaded', () => {
             objectReady(resultant)
         } else if (rr_flag) {
             var quanta_number = parseInt(document.getElementById("quan").value)
-            resultant = round_robin(quanta_number, inputArray)
-           /*  resultant.sort((a, b) => {
-                console.log('a = ' + a.name.substring(1)) + ' b = ' + parseInt(b.name.substring(1))
-                return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
-            }) */
-            add_rr_time(resultant)
-            rrGraphData(resultant)
+            if (quanta_number >= 1) {
+                resultant = round_robin(quanta_number, inputArray)
+                add_rr_time(resultant)
+                rrGraphData(resultant)
+            } else {
+                let txt = document.getElementById('algo-display')
+                txt.innerHTML = "QUANTA EITHER INCORRECT OR EMPTY. TRY AGAIN"
+            }
         } else {
             let txt = document.getElementById('algo-display')
             txt.innerHTML = "ALGORITHM NOT SELECTED!! Select an algorithm."
@@ -237,20 +238,14 @@ function add_result_time(arr) {
     //head.innerHTML = head.innerHTML + '<th>Waiting Time</th>'
     const completion_time = [], turnaround = [], waitingtime = []
     for (let i = 0; i < ta.rows.length - 1; i++) { // completion time
-        let cell = ta.rows[i + 1].insertCell(4)
-        cell.innerHTML = arr[i].end + smallest_at
-        completion_time.push(arr[i].end + smallest_at)
-    }
-
-    for (let i = 0; i < ta.rows.length - 1; i++) { //turnaround
-        let cell = ta.rows[i + 1].insertCell(5)
-        cell.innerHTML = completion_time[i] - arrivalColumn[i]
-        turnaround.push(completion_time[i] - arrivalColumn[i])
-    }
-
-    for (let i = 0; i < ta.rows.length - 1; i++) { //waiting time
-        let cell = ta.rows[i + 1].insertCell(6)
-        cell.innerHTML = turnaround[i] - burstColumn[i]
+        let cell1 = ta.rows[i + 1].insertCell(4)
+        cell1.innerHTML = arr[i].end + smallest_at
+        completion_time.push(arr[i].end + smallest_at)//turnaround
+        let cell2 = ta.rows[i + 1].insertCell(5)
+        cell2.innerHTML = completion_time[i] - arrivalColumn[i]
+        turnaround.push(completion_time[i] - arrivalColumn[i]) //waiting time
+        let cell3 = ta.rows[i + 1].insertCell(6)
+        cell3.innerHTML = turnaround[i] - burstColumn[i]
         waitingtime.push(turnaround[i] - burstColumn[i])
     }
     
@@ -259,15 +254,22 @@ function add_result_time(arr) {
 function add_rr_time(arr) {
     let ta = document.getElementById('data-table')
     const completion_time = [], turnaround = [], waitingtime = []
-    
+
     //for getting completion time
-    //var things = _.uniq(data, function(d){ return d.ID });
-    const last_quantas = [... new Set(arr.reverse())]
-    
     for (let i = 0; i < ta.rows.length - 1; i++) { // completion time
-        let cell = ta.rows[i + 1].insertCell(4)
-        cell.innerHTML = last_quantas[i].end + smallest_at
-        completion_time.push(arr[i].end + smallest_at)
+        let row = ta.rows[i + 1];
+        let newCell = row.insertCell(4)
+
+        let pName = row.querySelector('td').textContent;
+
+        console.log(pName)
+
+        let proc = arr.findLast((o) => o.name === pName)
+
+        console.log("haha" + proc)
+
+        newCell.innerHTML = proc.end + smallest_at
+        completion_time.push(proc.end + smallest_at)
     }
 
     for (let i = 0; i < ta.rows.length - 1; i++) { //turnaround
