@@ -268,7 +268,7 @@ function priority_queue(arr) { // low number represents higher priority *works*
     return out
 } */
 
-function round_robin(quanta, arr){
+function round_robin(quanta, arr) {
     const out = []
     const queue = []
 
@@ -283,16 +283,19 @@ function round_robin(quanta, arr){
         total_time += process.burst_time // calculating total time for scheduling
     })
 
-    while(current_time < total_time){
-        
+    while (current_time < total_time) {
+
         // inserting all arived processes into queue
         //console.log('a0 : ' + arr)
-        while(arr.length != 0 && arr[0].arrival_time <= current_time){
+        while (arr.length != 0 && arr[0].arrival_time <= current_time) {
             queue.push(arr.shift())
         }
 
         // moving top to end
-        queue.push(queue.shift())
+        // if current burst time is zero then remove from queue
+        let top = queue.shift()
+        if (top.burst_time > 0)
+            queue.push(top)
 
         let start = current_time
         let end = start + Math.min(queue[0].burst_time, quanta)
@@ -300,8 +303,12 @@ function round_robin(quanta, arr){
 
         queue[0].burst_time -= (end - start)
 
+
         current_time = end;
     }
+    out.forEach((bars) => {
+        console.log(bars)
+    })
     return out
 }
 

@@ -25,6 +25,13 @@ let DATA = {
                 beginAtZero: false,
                 stacked: true
             }
+        },
+        plugins:
+        {
+            legend: 
+            {
+                display: false
+            }
         }
     }
 }
@@ -60,17 +67,19 @@ function rrGraphData(out) {
             if (typeof proc === 'undefined') graphcoords.push([0, 0])
             else {
                 graphcoords.push([proc.start, proc.end])
-                out.shift()
+                //out.shift()
+                out.splice(out.indexOf(proc), 1); // removes pushed process
             }
         })
 
         console.log(graphcoords)
         DATA.data.datasets.push({
             label: 'set' + (i + 1),
-            data: graphcoords
+            data: graphcoords,
+            borderColor: '#36A2EB',
+            backgroundColor: '#9BD0F5'
         })
     }
-    
 }
 
 let smallest_at
