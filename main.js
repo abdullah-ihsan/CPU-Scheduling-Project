@@ -24,7 +24,7 @@ const createLoginWindow = () => {
 
     loginwindow.removeMenu() 
     loginwindow.loadFile('login_screen.html')
-    loginwindow.webContents.openDevTools()
+    //loginwindow.webContents.openDevTools()
 }
 
 const createMainWindow = () => {
@@ -43,7 +43,7 @@ const createMainWindow = () => {
         mainwindow.minimize()
     })
 
-    mainwindow.webContents.openDevTools()
+    //mainwindow.webContents.openDevTools()
 }
 
 const NOTIFICATION_TITLE = 'Basic Notification'

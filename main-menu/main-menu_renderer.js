@@ -54,7 +54,8 @@ function objectReady(out) // for fcfs, sjf and priority
     ]))
 }
 
-function rrGraphData(out) {
+function rrGraphData(arr) {
+    const out = arr;
     DATA.data.labels = [... new Set(out.map(a => a.name))] // names of processes in order of name
     console.log(DATA.data.labels)
     DATA.data.datasets = []
@@ -142,6 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
             var quanta_number = parseInt(document.getElementById("quan").value)
             if (quanta_number >= 1) {
                 resultant = round_robin(quanta_number, inputArray)
+                resultant.sort((a, b) => {
+                    return parseInt(a.name.substring(1)) - parseInt(b.name.substring(1))
+                })
                 add_rr_time(resultant)
                 rrGraphData(resultant)
             } else {
@@ -249,6 +253,11 @@ function add_result_time(arr) {
         waitingtime.push(turnaround[i] - burstColumn[i])
     }
     
+    let avgwaiting
+    for (let i = 0 ; i < waitingtime.length; i++) {
+        avgwaiting += waitingtime
+    }
+    document.getElementById('avg-time').innerHTML = "Average Waiting Time = " + (avgwaiting / waitingtime.length)
 }
 
 function add_rr_time(arr) {

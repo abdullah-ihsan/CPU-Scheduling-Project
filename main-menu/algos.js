@@ -272,14 +272,16 @@ function round_robin(quanta, arr) {
     const out = []
     const queue = []
 
-    arr.sort((a, b) => { // first sorting processes by arrival time
+    const proc = arr
+
+    proc.sort((a, b) => { // first sorting processes by arrival time
         return a.arrival_time - b.arrival_time
     })
-    console.log('a0 : ' + arr[0].arrival_time)
+    console.log('a0 : ' + proc[0].arrival_time)
     let total_time = 0
     let current_time = 0
 
-    arr.forEach((process) => {
+    proc.forEach((process) => {
         total_time += process.burst_time // calculating total time for scheduling
     })
 
@@ -287,8 +289,8 @@ function round_robin(quanta, arr) {
 
         // inserting all arived processes into queue
         //console.log('a0 : ' + arr)
-        while (arr.length != 0 && arr[0].arrival_time <= current_time) {
-            queue.push(arr.shift())
+        while (proc.length != 0 && proc[0].arrival_time <= current_time) {
+            queue.push(proc.shift())
         }
 
         // moving top to end
