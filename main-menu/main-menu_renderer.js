@@ -253,9 +253,9 @@ function add_result_time(arr) {
         waitingtime.push(turnaround[i] - burstColumn[i])
     }
     
-    let avgwaiting
+    let avgwaiting = 0
     for (let i = 0 ; i < waitingtime.length; i++) {
-        avgwaiting += waitingtime
+        avgwaiting += waitingtime[i]
     }
     document.getElementById('avg-time').innerHTML = "Average Waiting Time = " + (avgwaiting / waitingtime.length)
 }

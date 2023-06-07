@@ -43,7 +43,7 @@ const createMainWindow = () => {
         mainwindow.minimize()
     })
 
-    //mainwindow.webContents.openDevTools()
+    mainwindow.webContents.openDevTools()
 }
 
 const NOTIFICATION_TITLE = 'Basic Notification'
